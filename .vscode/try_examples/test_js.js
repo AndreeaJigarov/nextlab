@@ -49,3 +49,4 @@ const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 function reverseString(str) {
   return str.split('').reverse().join('');
 }
+ 
