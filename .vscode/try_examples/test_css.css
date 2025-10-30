@@ -1,0 +1,17 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+}
+
+/* Center a div horizontally and vertically */
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background-color: #e2e2e2;
+    border: 1px solid #999;
+}
