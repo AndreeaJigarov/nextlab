@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 Lista mea de sarcini</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Segoe UI', sans-serif; /* Changed font to Roboto */
+        }
+
+        body {
+            background-color: #fff5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #ff9a9e;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #ffd1d1;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff9a9e;
+        }
+
+        .add-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 0; /* Changed to square */
+            background: #ff9a9e;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: #fff9f9;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .todo-text {
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .todo-btn {
+            border: none;
+            background: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.3rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            border-radius: 0; /* Changed to square */
+        }
+
+        .todo-btn:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 Lista mea de sarcini</h1>
+        <div class="input-container">
+            <input type="text" id="taskInput" placeholder="Adaugă o sarcină nouă...">
+            <button class="add-btn" id="addBtn">+</button>
+        </div>
+        <ul class="todo-list" id="todoList"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskInput = document.getElementById('taskInput');
+            const addBtn = document.getElementById('addBtn');
+            const todoList = document.getElementById('todoList');
+            let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+            function saveTodos() {
+                localStorage.setItem('todos', JSON.stringify(todos));
+            }
+
+            function renderTodos() {
+                todoList.innerHTML = '';
+                todos.forEach((todo, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'todo-item';
+                    li.innerHTML = `
+                        <button class="todo-btn" onclick="toggleTodo(${index})">✔️</button>
+                        <span class="todo-text ${todo.completed ? 'completed' : ''}">${todo.text}</span>
+                        <button class="todo-btn" onclick="deleteTodo(${index})">✖️</button>
+                    `;
+                    todoList.appendChild(li);
+                });
+            }
+
+            function addTodo() {
+                const text = taskInput.value.trim();
+                if (text) {
+                    todos.push({ text, completed: false });
+                    saveTodos();
+                    renderTodos();
+                    taskInput.value = '';
+                }
+            }
+
+            window.toggleTodo = (index) => {
+                todos[index].completed = !todos[index].completed;
+                saveTodos();
+                renderTodos();
+            };
+
+            window.deleteTodo = (index) => {
+                todos.splice(index, 1);
+                saveTodos();
+                renderTodos();
+            };
+
+            addBtn.addEventListener('click', addTodo);
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addTodo();
+            });
+
+            renderTodos();
+        });
+    </script>
+</body>
+</html></div>
